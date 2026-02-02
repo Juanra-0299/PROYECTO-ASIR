@@ -1,5 +1,7 @@
 La idea de hacer el proyecto es cubrir una necesidad, en nuestro caso aprovechando que quieren cambiar el proxy de nuestro instituto vamos a rediseñar la estructura de los equipos de la red añadiendo una zona para meter los servidores
 
-AÑADIR UN FOG
+Esquema de la red con packet tracer
 
-ZONA DMZ
+AÑADIR UN FOG, en la DMZ o en la red de los equipos?
+
+ZONA DMZ para los servicios
