@@ -4,7 +4,8 @@
 La infraestructura de red ya está parcialmente implementada.
 
 Contamos con:
-
+- Router del departamento.
+- Back panel, switch configurable y switch.
 
 ## Recursos necesarios
 
