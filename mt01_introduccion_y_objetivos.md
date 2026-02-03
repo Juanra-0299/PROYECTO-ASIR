@@ -42,6 +42,8 @@ El proyecto abarca:
 2.  **Implementación:** Instalación y configuración de los servicios (DNS, Web, FTP, RADIUS, FOG) sobre sistemas operativos servidor (Linux/Windows Server).
 3.  **Seguridad:** Definición de reglas de firewall y ACLs para controlar el tráfico entre la red Alumnos, la DMZ e Internet.
 4.  **Validación:** Ejecución de un plan de pruebas de conectividad y funcionalidad de servicios.
+   
+
 
 
 **-Análisis, Mantenimiento y configuracion del hardware:**
