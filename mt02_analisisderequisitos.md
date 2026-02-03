@@ -29,7 +29,7 @@ Un servidor que alojará los siguientes servicios, algunos de ellos mediante **c
 - **FTP**: repositorio de archivos.
 - **Utilidades varias**: juegos, temperaturas, etc.
 
-### Equipos en la red de alumnado
+### Equipo en la red de alumnado
 Un servidor dedicado que proporciona:
 
 - **FOG**: despliegue y restauración de equipos sin necesidad de pendrive.
