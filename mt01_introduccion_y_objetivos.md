@@ -24,11 +24,11 @@ Diseñar, implementar y asegurar una infraestructura de red escalable que sustit
 **2. Implementación de Servicios en la DMZ**
 * **DNS:** Configuración de resolución de nombres y filtrado de contenido web, optimizando el ancho de banda mediante caché.
 * **Web:** Alojamiento del sitio web institucional del centro.
-* **FTP:** Despliegue de un repositorio de archivos accesible tanto interna como externamente.
+* **FTP (Opcional):** Despliegue de un repositorio de archivos accesible tanto interna como externamente.
 * **Correo (Opcional):** Valoración de la implementación de un servidor de correo propio o su integración con soluciones externas.
 
 **3. Optimización de la Red Interna (Servicios de Gestión)**
-* **FOG Project:** Implementación en la red de distribución para la clonación y despliegue de imágenes de sistema operativo vía red (PXE/Multicast), eliminando el uso de soportes físicos.
+* **FOG Project:** Implementación en la red de distribución para la clonación y despliegue de imágenes de sistemas operativos vía red (PXE/Multicast), eliminando el uso de soportes físicos.
 * **RADIUS:** Configuración de un servidor de autenticación para centralizar el control de acceso. Se integrará con el servicio FTP de la DMZ para evitar la gestión de usuarios locales, permitiendo el uso de credenciales corporativas (LDAP/AD).
 
 **4. Conectividad Externa**
