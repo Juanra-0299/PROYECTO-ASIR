@@ -43,6 +43,7 @@ El proyecto abarca:
 3.  **Seguridad:** Definición de reglas de firewall y ACLs para controlar el tráfico entre la red Alumnos, la DMZ e Internet.
 4.  **Validación:** Ejecución de un plan de pruebas de conectividad y funcionalidad de servicios.
 
+
 **-Análisis, Mantenimiento y configuracion del hardware:**
 
 * **Auditoría de Inventario y Compatibilidad:**
