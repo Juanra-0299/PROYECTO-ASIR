@@ -12,7 +12,7 @@ Curso: 2º ASIR
 ## Resumen ejecutivo
 
 
-## 1. Introducción y objetivos (#1-introducción-y-objetivos-1)
+## [1. Introducción y objetivos](#1 Introducción y objetivos.)
 
 ## 2. Análisis de requisitos
 
@@ -38,7 +38,7 @@ Curso: 2º ASIR
 ## Resumen ejecutivo
 
 
-## 1. Introducción y objetivos
+## 1. Introducción y objetivos.
 
 
 ## 2. Análisis de requisitos
