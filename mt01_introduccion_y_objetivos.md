@@ -44,7 +44,6 @@ El proyecto abarca:
 4.  **Validación:** Ejecución de un plan de pruebas de conectividad y funcionalidad de servicios.
 
 **-Análisis, Mantenimiento y configuracion del hardware:**
-*Instalación física de cableado estructurado o hardware (racks, rosetas), asumiendo la reutilización de la infraestructura pasiva existente.*
 
 * **Auditoría de Inventario y Compatibilidad:**
     * Evaluación de los recursos de hardware existentes (CPU, RAM, Almacenamiento) en los servidores destinados a virtualización (Proxmox/ESXi) para asegurar que soportan la carga de los nuevos servicios (RADIUS, FOG, Web, etc.).
@@ -59,5 +58,5 @@ El proyecto abarca:
     * Segmentación de puertos en switches (Access/Trunk) acorde al diseño de VLANs propuesto.
 
 * **Infraestructura Física Pasiva:**
-    * Instalación de cableado estructurado (UTP/Fibra), canaletas, rosetas, paneles de parcheo (patch panels). Se utilizará el cableado ya certificado del edificio.
+    * Instalación/revisión de cableado estructurado (UTP/Fibra), canaletas, rosetas, paneles de parcheo (patch panels). Se utilizará el cableado ya certificado del edificio.
     * Incluye el montaje físico de armarios rack y la instalación eléctrica asociada (SAI/UPS)
