@@ -1,3 +1,58 @@
+# Memoria ténica
+
+## 1. Introducción y objetivos
+
+
+## 2. Análisis de requisitos
+
+
+## 3. Diseño técnico (diagramas, topologías)
+
+
+## 4. Implementación (procedimientos, comandos, scripts)
+
+
+## 5. Pruebas y resultados (evidencias)
+
+
+## 6. Seguridad y gestión de riesgos
+
+
+## 7. Conclusiones y mejoras propuestas
+
+
+## 8. Anexos (código, scripts, listados de configuración, FUENTES)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Proyecto de infraestructura de red
 
 ## Descripción general
