@@ -1,4 +1,4 @@
-Objetivos Específicos
+Se van a implementar los siguientes objetivos específicos:
 
 1. Reestructuración de la Topología de Red
 
