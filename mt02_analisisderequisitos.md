@@ -36,7 +36,7 @@ Un servidor dedicado que proporciona:
 - **RADIUS**: autenticación centralizada.
 
 ### Patch panel
-Para el aula 1 Asir
+Para el aula de 1º de Asir.
 
 ### Conectores rj45 machos y hembras
-Para las aulas que lo necesiten
+Para las aulas que lo requieran.
