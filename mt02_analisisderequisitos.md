@@ -10,11 +10,11 @@ Contamos con:
 - Switch configurable.
 - Proxy del departamento (a sustituir por nuestro proxy).
 - Switch por cada aula.
-- Patch panel en algunas de las aulas (habra que poner patch panel en aquellas que no este).
+- Patch panel en algunas de las aulas (habrá que poner patch panel en aquellas que no esté).
 
 ## Recursos necesarios
 
-### Router de tres interfaces
+### Router proxy de tres interfaces
 Se requiere un router multiinterfaz con las siguientes funciones:
 
 1. **Interfaz de entrada**: proveer conectividad a Internet.
