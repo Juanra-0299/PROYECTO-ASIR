@@ -10,7 +10,9 @@ Se van a implementar los siguientes objetivos específicos:
 
         Zona LAN/Alumnado: Subred 172.16.0.0/16 (Red interna de aulas).
 
-    Configurar el enrutamiento inter-VLAN para gestionar el tráfico entre los distintos grupos de trabajo (1SMR, 2SMR, 1ASIR, 2ASIR, etc).
+    Configurar el enrutamiento inter-VLAN para gestionar el tráfico entre los distintos grupos de trabajo (1SMR, 2SMR, 1ASIR, 2ASIR, etc):
+
+   -con iptables o otra alternativa o app
 
 3. Implementación de Servicios en la DMZ
 
