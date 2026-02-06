@@ -3,24 +3,40 @@ Se van a implementar los siguientes objetivos específicos:
 1. Reestructuración de la Topología de Red
 
     Segmentar la red en tres zonas lógicas diferenciadas para garantizar la seguridad y el rendimiento:
+
         Zona WAN/Departamental: Subred 192.168.1.0/24 (Conexión a Internet).
+
         Zona DMZ: Subred 10.0.0.0/8 (Servidores públicos).
+
         Zona LAN/Alumnado: Subred 172.16.0.0/16 (Red interna de aulas).
+
     Configurar el enrutamiento inter-VLAN para gestionar el tráfico entre los distintos grupos de trabajo (1SMR, 2SMR, 1ASIR, 2ASIR, etc).
 
-2. Implementación de Servicios en la DMZ
+3. Implementación de Servicios en la DMZ
 
     DNS: Configuración de resolución de nombres y filtrado de contenido web, optimizando el ancho de banda mediante caché.
+
+   
     Web: Alojamiento del sitio web institucional del centro.
+
+   
     FTP (Opcional): Despliegue de un repositorio de archivos accesible tanto interna como externamente.
+
+   
     Correo (Opcional): Valoración de la implementación de un servidor de correo propio o su integración con soluciones externas.
 
-3. Optimización de la Red Interna (Servicios de Gestión)
+   
+
+5. Optimización de la Red Interna (Servicios de Gestión)
 
     FOG Project: Implementación en la red de distribución para la clonación y despliegue de imágenes de sistemas operativos vía red (PXE/Multicast), eliminando el uso de soportes físicos.
+
+   
     RADIUS: Configuración de un servidor de autenticación para centralizar el control de acceso. Se integrará con el servicio FTP de la DMZ para evitar la gestión de usuarios locales, permitiendo el uso de credenciales corporativas (LDAP/AD).
 
-4. Conectividad Externa
+   
+
+7. Conectividad Externa
 
     DDNS: Configuración de DNS Dinámico en el router de borde para mitigar la rotación de IP pública dinámica y garantizar el acceso remoto a los servicios.
 
