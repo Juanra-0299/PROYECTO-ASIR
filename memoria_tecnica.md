@@ -1,4 +1,4 @@
-# Memoria ténica
+# Memoria técnica
 
 ## Portada (título, integrantes, tutor/a)
 ## Análisis y mejora de la infraestrucura informática del IES Padre Poveda
