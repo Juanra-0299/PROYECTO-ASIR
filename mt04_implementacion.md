@@ -4,7 +4,7 @@ Se van a implementar los siguientes objetivos específicos:
 
     Segmentar la red en tres zonas lógicas diferenciadas para garantizar la seguridad y el rendimiento:
 
-        Zona WAN/Departamental: Subred 192.168.1.0/24 (Conexión a Internet).
+        Zona LAN/Departamental: Subred 192.168.1.0/24 (Conexión a Internet).
 
         Zona DMZ: Subred 10.0.0.0/8 (Servidores públicos).
 
@@ -12,7 +12,7 @@ Se van a implementar los siguientes objetivos específicos:
 
     Configurar el enrutamiento inter-VLAN para gestionar el tráfico entre los distintos grupos de trabajo (1SMR, 2SMR, 1ASIR, 2ASIR, etc):
 
-   -con iptables o otra alternativa o app
+   -con iptables u otra alternativa o app
 
 3. Implementación de Servicios en la DMZ
 
