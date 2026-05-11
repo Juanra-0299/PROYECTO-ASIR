@@ -49,7 +49,7 @@ El proyecto abarca:
 **-Análisis, Mantenimiento y configuracion del hardware:**
 
 * **Auditoría de Inventario y Compatibilidad:**
-    * Evaluación de los recursos de hardware existentes (CPU, RAM, Almacenamiento) en los servidores destinados a virtualización (Proxmox/ESXi) para asegurar que soportan la carga de los nuevos servicios (RADIUS, FOG, Web, etc.).
+    * Evaluación de los recursos de hardware existentes (CPU, RAM, Almacenamiento) en los servidores destinados a virtualización (Contenedores, Docker, Kubernetes, Proxmox/ESXi) para asegurar que soportan la carga de los nuevos servicios (RADIUS, FOG, Web, etc.).
     * Verificación de capacidades en equipos de interconexión: Soporte para estándares en switches y capacidad de procesamiento/throughput en el router para gestionar el tráfico de la DMZ sin cuellos de botella.
 
 * **Mantenimiento Preventivo y Actualización:**
