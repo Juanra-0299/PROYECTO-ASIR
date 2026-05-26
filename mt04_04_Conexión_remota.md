@@ -1,250 +1,420 @@
-# 4. Conexión remota
-# Manual de Conexión Remota Segura con Tailscale y AnyDesk
+# Guía de Conexión Remota Segura con Tailscale y AnyDesk
 
-Este documento detalla los pasos para establecer una **conexión remota a través de Internet de forma segura** hacia nuestro servidor o equipo de clase, **sin necesidad de abrir puertos en el router**.
-
-Utilizaremos:
-
-- **Tailscale** → para crear una red privada virtual (VPN).
-- **AnyDesk** → como herramienta de soporte gráfico remoto.
+Esta guía explica cómo configurar un acceso remoto seguro a un servidor o infraestructura de laboratorio **sin necesidad de abrir puertos en el router**, utilizando **Tailscale** para la conectividad VPN y **AnyDesk** para administración remota gráfica.
 
 ---
 
-# 🛠️ Parte 1: Instalación y Configuración de Tailscale
+# Parte 1: Instalación y Configuración de Tailscale
 
-Tailscale nos permite crear una **red privada (VPN)** de forma rápida y sencilla.
+## ¿Qué es Tailscale?
 
-## 1. Instalación en el Servidor (Linux)
+**Tailscale** es una VPN moderna basada en **WireGuard** que permite conectar dispositivos de forma segura a través de internet sin necesidad de abrir puertos ni configurar NAT en el router.
 
-Para instalar Tailscale en nuestro equipo Linux, ejecutamos los siguientes comandos:
+En este caso, se utilizará para acceder remotamente a:
+
+- **Servidor Proxmox**
+- **Router OPNsense**
+- **Servidor WordPress**
+- Otros servicios internos de la red
+
+---
+
+## Paso 1: Instalación de Tailscale
+
+Instalamos Tailscale en el servidor Linux donde queremos habilitar el acceso remoto.
+
+### Descargar e instalar Tailscale
 
 ```bash
 wget https://tailscale.com/install.sh
 sudo bash install.sh
-📷 Análisis visual
+```
 
-En las imágenes capturadas de la terminal se observa cómo:
+Una vez finalizada la instalación, tendremos disponible el comando `tailscale`.
 
-El sistema descarga el script install.sh mediante wget.
-Posteriormente se desempaquetan e instalan los paquetes .deb necesarios para la arquitectura amd64.
-Finalmente, la instalación se completa correctamente.
-2. Autenticación y Habilitación de SSH
+---
 
-Una vez instalado, iniciamos el servicio:
+## Paso 2: Inicio de Sesión y Vinculación del Equipo
 
+Ahora iniciaremos el servicio y vincularemos el equipo a nuestra cuenta de Tailscale.
+
+### Activar Tailscale
+
+```bash
 sudo tailscale up
-🔐 Inicio de sesión
+```
 
-Este comando generará una URL en la consola.
+Al ejecutar el comando, aparecerá un enlace similar a este:
 
-Debemos:
+```text
+https://login.tailscale.com/...
+```
 
-Copiar el enlace.
-Abrirlo en el navegador web.
-Autenticarnos con una cuenta.
+Copiamos el enlace y lo abrimos en el navegador.
 
-En este caso práctico se utilizó una cuenta de GitHub para iniciar sesión.
+### Iniciar sesión
 
-🔓 Habilitar SSH en Tailscale
+Podemos iniciar sesión utilizando:
 
-Para permitir conexiones seguras por SSH directamente a través de la red de Tailscale, ejecutamos:
+- Cuenta de GitHub
+- Google
+- Microsoft
+- Correo electrónico
 
+En este caso se utilizó **GitHub**.
+
+Una vez autenticado, el dispositivo aparecerá automáticamente en el panel web de Tailscale.
+
+---
+
+## Paso 3: Habilitar SSH Seguro sobre Tailscale
+
+Tailscale permite habilitar conexiones SSH seguras sin necesidad de exponer el puerto `22` a internet.
+
+### Activar SSH
+
+```bash
 sudo tailscale set --ssh
-📷 Análisis visual
+```
 
-En la consola de administración web de Tailscale (Admin Console) se puede comprobar que el equipo aparece conectado y con el indicador SSH habilitado en color verde.
+Con esto el equipo ya aceptará conexiones SSH desde otros dispositivos pertenecientes a la misma red privada de Tailscale.
 
-🚇 Parte 2: Acceso mediante Túneles SSH (Método 1)
+Podemos verificar el dispositivo desde el panel de administración web de Tailscale.
 
-Este método es muy seguro, aunque requiere mantener una terminal abierta durante toda la sesión.
+---
 
-1. Preparación en el equipo Cliente (Casa)
+# Parte 2: Configuración del Cliente (Equipo de Casa)
 
-Instalamos Tailscale también en nuestro equipo personal.
+Ahora instalaremos **Tailscale** también en el ordenador desde el que realizaremos la conexión remota.
 
-Después:
+Repetimos exactamente los mismos pasos:
 
-Hacemos clic derecho sobre el icono de Tailscale en la barra de tareas de Windows.
-Accedemos a:
-Network devices > My Devices
-Seleccionamos nuestro equipo de clase.
+```bash
+wget https://tailscale.com/install.sh
+sudo bash install.sh
+```
 
-Esto copiará automáticamente la IP de Tailscale al portapapeles.
+Después iniciamos sesión:
 
-📷 Análisis visual
+```bash
+sudo tailscale up
+```
 
-Las capturas muestran el menú desplegable de Tailscale en Windows, donde aparecen los dispositivos de la red y se selecciona el equipo remoto para copiar su dirección IP.
+Una vez iniciado, el cliente podrá visualizar todos los dispositivos de nuestra red Tailscale.
 
-2. Creación del Túnel SSH
+---
 
-Abrimos una terminal en nuestro equipo local y ejecutamos el siguiente comando:
+## Obtener la IP de Tailscale del Servidor
 
+En el cliente:
+
+1. Hacemos clic derecho sobre el icono de **Tailscale**.
+2. Entramos en:
+
+```text
+Network Devices > My Devices
+```
+
+3. Seleccionamos el equipo remoto.
+4. Copiamos su dirección IP de Tailscale.
+
+---
+
+# Parte 3: Creación de un Túnel SSH
+
+Una vez obtenida la IP, crearemos un túnel SSH para acceder a los servicios internos de la red del aula.
+
+## ¿Qué hace un túnel SSH?
+
+Un túnel SSH permite **redirigir puertos internos de una red remota hacia nuestro propio equipo local**, haciendo que servicios privados parezcan ejecutarse en nuestro ordenador.
+
+---
+
+## Crear el túnel SSH
+
+Abrimos una terminal en el equipo cliente y ejecutamos:
+
+```bash
 ssh -L 8006:172.16.0.2:8006 \
 -L 80:172.16.0.1:80 \
 -L 8080:10.0.0.11:80 \
 [usuario]@[ip_de_tailscale]
+```
 
-Nota: Debes sustituir [usuario] y [ip_de_tailscale] por los datos reales de tu servidor.
+### Explicación del comando
 
-❓ ¿Qué hace este comando?
+La sintaxis es:
 
-Este comando redirecciona los puertos de los servicios internos de la red de clase hacia nuestro propio localhost (127.0.0.1).
+```text
+-L [puerto_local]:[ip_destino]:[puerto_remoto]
+```
 
-Ejemplo de servicios
-Servicio	IP destino	Puerto
-Proxmox	172.16.0.2	8006
-OPNsense	172.16.0.1	80
-WordPress	10.0.0.11	80
+En este caso:
 
-La sintaxis utilizada es:
+| Servicio | IP remota | Puerto | Puerto Local |
+|-----------|------------|---------|---------------|
+| Proxmox | 172.16.0.2 | 8006 | 8006 |
+| OPNsense | 172.16.0.1 | 80 | 80 |
+| WordPress | 10.0.0.11 | 80 | 8080 |
 
--L [puerto_localhost]:[ip_destino]:[puerto_servicio]
-📷 Análisis visual
+### Sustituir valores
 
-Las imágenes muestran cómo:
+Debes cambiar:
 
-Se ejecuta el comando SSH.
-Se acepta la huella de seguridad (fingerprint).
-Se establece correctamente el túnel.
+```text
+[usuario]
+```
 
-Posteriormente, desde el navegador web se accede a los servicios usando:
+Por el usuario del servidor Linux.
 
-Accesos disponibles
-Proxmox
+Y:
+
+```text
+[ip_de_tailscale]
+```
+
+Por la IP copiada desde Tailscale.
+
+Ejemplo:
+
+```bash
+ssh -L 8006:172.16.0.2:8006 \
+-L 80:172.16.0.1:80 \
+-L 8080:10.0.0.11:80 \
+jesus@100.x.x.x
+```
+
+> **Importante:** La terminal debe permanecer abierta mientras quieras mantener el túnel activo.
+
+---
+
+# Parte 4: Acceso a los Servicios
+
+Una vez activo el túnel SSH, podremos acceder a los servicios internos desde el navegador usando `localhost`.
+
+## Acceso a Proxmox
+
+```text
 https://127.0.0.1:8006
+```
 
-Será necesario aceptar el riesgo del certificado autofirmado.
+> El navegador puede advertir sobre un certificado autofirmado. Es normal; basta con aceptar el riesgo y continuar.
 
-WordPress
+---
+
+## Acceso a WordPress
+
+```text
 http://127.0.0.1:8080
-OPNsense
+```
+
+---
+
+## Acceso a OPNsense
+
+```text
 http://127.0.0.1
+```
 
-⚠️ Importante: Debes mantener esta ventana de terminal abierta.
-Si la cierras, el túnel dejará de funcionar.
+---
 
-🛣️ Parte 3: Acceso mediante Subnet Routing (Método 2 - Recomendado)
+# Parte 5: Alternativa Avanzada — Tailscale Subnet Routing
 
-Para evitar abrir un túnel SSH cada vez que queremos trabajar, Tailscale permite que nuestro servidor actúe como router hacia toda la subred interna de clase.
+El túnel SSH funciona muy bien, pero obliga a:
 
-1. Configuración del Enrutamiento en el Servidor
+- Ejecutar el comando manualmente
+- Mantener la terminal abierta
 
-Primero habilitamos el reenvío de paquetes (IP Forwarding):
+Como alternativa, podemos utilizar **Subnet Routing**, permitiendo que el servidor actúe como un router para toda la red.
 
+## Habilitar el reenvío de paquetes
+
+Ejecutamos:
+
+```bash
 echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
 
 echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+```
 
-A continuación, anunciamos las rutas de nuestras subredes:
+---
 
+## Publicar las rutas de red
+
+Ejecutamos:
+
+```bash
 sudo tailscale up --advertise-routes=172.16.0.0/24,10.0.0.0/24 --ssh
-2. Aprobación de las Rutas
+```
 
-Por motivos de seguridad, las rutas deben aprobarse manualmente desde la administración de Tailscale.
+### ¿Qué significa esto?
 
-Pasos
-Entrar al panel de administración web de Tailscale.
-Ir a la pestaña:
-Machines
-Buscar nuestro servidor.
-Seleccionar:
-Edit route settings
-Aprobar las rutas anunciadas.
-📷 Análisis visual
+Estamos anunciando las siguientes redes:
 
-Las capturas muestran:
+| Red | Función |
+|------|----------|
+| 172.16.0.0/24 | Infraestructura interna |
+| 10.0.0.0/24 | Red de servidores |
 
-La ejecución correcta de los comandos de red (sysctl).
-El anuncio de rutas.
-La ventana donde el administrador habilita:
-10.0.0.0/24
-172.16.0.0/24
-3. Acceso Directo
+---
 
-Una vez configurado, ya no será necesario usar 127.0.0.1 ni crear túneles SSH.
+## Aprobar las rutas
 
-Simplemente debemos tener Tailscale encendido en el equipo cliente.
+Ahora accedemos al panel web de Tailscale:
 
-Servicios disponibles
-Proxmox
+1. Entramos en **Admin Console**
+2. Vamos a **Machines**
+3. Seleccionamos el servidor
+4. Entramos en:
+
+```text
+Edit Route Settings
+```
+
+5. Aprobamos las rutas anunciadas.
+
+---
+
+## Acceso directo sin túneles
+
+A partir de este momento **ya no necesitaremos el túnel SSH**.
+
+Podremos acceder directamente usando las IP reales.
+
+### Proxmox
+
+```text
 https://172.16.0.2:8006
-WordPress
+```
+
+### WordPress
+
+```text
 http://10.0.0.11:8080
-OPNsense
+```
+
+### OPNsense
+
+```text
 http://172.16.0.1
-🖥️ ANEXO: Configuración de AnyDesk para Monitorización
+```
 
-Se utiliza AnyDesk para la monitorización gráfica del servidor FOG.
+---
 
-Instalación de AnyDesk
+# Parte 6: Instalación de AnyDesk
 
-Descargamos e instalamos el paquete .deb:
+## ¿Por qué usar AnyDesk?
 
-wget --max-redirect 1 --trust-server-names \
-'https://anydesk.com/en/downloads/thank-you?dv=deb_64' \
--O anydesk.deb && sudo apt install ./anydesk.deb
-❌ Problema con Wayland
+AnyDesk permite administrar remotamente escritorios gráficos, siendo útil para:
 
-Al intentar conectar por primera vez puede aparecer el siguiente error:
+- Supervisar el servidor
+- Gestionar interfaces gráficas
+- Soporte remoto
 
-No admitido:
-No se admite el servidor remoto de pantalla
-(p. ej. Wayland)
-¿Por qué ocurre?
+---
 
-Wayland bloquea la captura de pantalla necesaria para herramientas clásicas de control remoto como AnyDesk.
+## Instalación de AnyDesk
 
-✅ Solución: Instalar Xfce + LightDM
+Ejecutamos:
 
-Instalamos un entorno compatible:
+```bash
+wget --max-redirect 1 --trust-server-names 'https://anydesk.com/en/downloads/thank-you?dv=deb_64' -O anydesk.deb
 
-sudo apt update && sudo apt install xfce4 xfce4-goodies lightdm -y && sudo dpkg-reconfigure gdm3
+sudo apt install ./anydesk.deb
+```
 
-Durante la instalación debemos seleccionar:
+---
 
+# Parte 7: Solución del Problema con Wayland
+
+Al intentar conectarse, puede aparecer un error porque **AnyDesk no es compatible con Wayland**.
+
+La solución consiste en instalar **Xfce** y utilizar **LightDM**.
+
+## Instalar entorno gráfico compatible
+
+```bash
+sudo apt update && sudo apt install xfce4 xfce4-goodies lightdm -y
+```
+
+---
+
+## Reconfigurar el gestor gráfico
+
+Ejecutamos:
+
+```bash
+sudo dpkg-reconfigure gdm3
+```
+
+En el menú desplegable seleccionamos:
+
+```text
 lightdm
-📷 Análisis visual
+```
 
-Tras reiniciar el sistema:
+---
 
-En la pantalla de inicio de sesión (Login).
-Hacemos clic en el selector de entorno (esquina superior derecha).
-Seleccionamos:
-Sesión de Xfce
+## Seleccionar sesión Xfce
 
-En lugar del entorno predeterminado basado en Wayland.
+En la pantalla de inicio de sesión:
 
-🔐 Configuración de Seguridad en AnyDesk
-1. Configurar Contraseña
+1. Hacemos clic en el selector de sesión.
+2. Elegimos:
 
-Ir a:
+```text
+Xfce Session
+```
 
-Configuración → Acceso →  
-Desbloquear el control de seguridad →  
-Cambiar la contraseña de este puesto de trabajo
+3. Iniciamos sesión normalmente.
+
+---
+
+# Parte 8: Configuración de Seguridad en AnyDesk
+
+Para evitar accesos no autorizados, configuramos un acceso mediante contraseña.
+
+## Configurar contraseña de acceso
+
+Abrimos:
+
+```text
+AnyDesk → Configuración → Acceso
+```
+
+Después:
+
+1. **Desbloquear el control de seguridad**
+2. **Cambiar contraseña de este puesto de trabajo**
 
 En este caso se configuró:
 
+```text
 2Asir
-2. Restricción de Acceso
+```
 
-Se configuró una lista blanca, permitiendo el acceso únicamente a IDs específicos de AnyDesk.
+> En un entorno real se recomienda utilizar contraseñas más seguras.
 
-Ruta:
+---
 
-Restricción de acceso
+## Recomendaciones de Seguridad
 
-Además:
+También se recomienda:
 
-Se excluyó el dispositivo de la red de descubrimiento público.
-Se limitaron accesos no autorizados.
-✅ Conclusión
+- Restringir accesos no autorizados
+- Excluir el equipo del descubrimiento automático
+- Limitar usuarios permitidos
 
-Gracias a esta configuración:
+Esto mejora significativamente la seguridad del sistema remoto.
 
-Podemos acceder remotamente sin abrir puertos en el router.
-La conexión se realiza mediante una VPN privada segura (Tailscale).
-Podemos acceder a los servicios internos de red de forma sencilla.
-Disponemos de acceso gráfico gracias a AnyDesk.
+---
 
-El método recomendado es Subnet Routing, ya que evita tener que crear túneles SSH manualmente cada vez que queremos conectarnos.
+# Conclusión
+
+Con esta configuración hemos conseguido:
+
+✅ Acceso remoto seguro mediante **Tailscale**  
+✅ Conexión SSH privada sin abrir puertos  
+✅ Acceso a servicios internos mediante túneles SSH  
+✅ Alternativa avanzada con **Subnet Routing**  
+✅ Administración gráfica mediante **AnyDesk**
