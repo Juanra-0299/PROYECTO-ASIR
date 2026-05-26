@@ -278,8 +278,8 @@ define( 'DB_HOST', '10.0.0.13' );
 Si alguno de estos parámetros no coincide, WordPress mostrará un error de conexión a la base de datos.
 
 
-
-
+---------------------------------
+CONTINUAMOS CON EL SERVIDOR WEB
 ## Paso 6: Configuración del Archivo de Conexión a la Base de Datos
 
 Accedemos a la carpeta pública del proyecto y generamos el archivo de configuración definitivo (`wp-config.php`) a partir de la plantilla de ejemplo proporcionada por WordPress.
