@@ -110,6 +110,175 @@ ls -la /var/www/html/theproyect
 ```
 
 ---
+antes de continuar, tendremos que haber configurado el servidor de base de datos
+# PARTE 2: Configuración del Servidor de Base de Datos (MySQL)
+
+Una vez preparado el servidor web, configuraremos el **servidor de base de datos MySQL**, el cual almacenará toda la información de WordPress (usuarios, entradas, configuración, plugins, etc.).
+
+## Paso 1: Instalación de MySQL Server
+
+Primero instalamos el servicio de **MySQL Server** en el servidor destinado a la base de datos.
+
+### Instalar MySQL
+
+```bash
+sudo apt update
+sudo apt install mysql-server -y
+```
+
+### Verificar el estado del servicio
+
+Comprobamos que el servicio se encuentre activo y funcionando correctamente:
+
+```bash
+sudo systemctl status mysql
+```
+
+El resultado esperado debe indicar:
+
+```text
+Active: active (running)
+```
+
+---
+
+## Paso 2: Configuración de Acceso Remoto de MySQL
+
+Por defecto, MySQL solo escucha conexiones locales (`127.0.0.1`). Como WordPress estará en otro servidor, debemos modificar la configuración para permitir conexiones desde la red.
+
+### Editar el archivo de configuración
+
+Abrimos el archivo principal de configuración de MySQL:
+
+```bash
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+```
+
+### Modificar la IP de escucha (`bind-address`)
+
+Buscamos la siguiente línea:
+
+```ini
+bind-address = 127.0.0.1
+```
+
+Y la modificamos por la IP del servidor de base de datos:
+
+```ini
+bind-address = 10.0.0.13
+```
+
+> **Nota:** Sustituye `10.0.0.13` por la dirección IP real de tu servidor MySQL.
+
+Esto permitirá que el servidor WordPress pueda localizar y conectarse correctamente a la base de datos.
+
+### Reiniciar MySQL
+
+Después de aplicar cambios, reiniciamos el servicio:
+
+```bash
+sudo systemctl restart mysql
+```
+
+---
+
+## Paso 3: Creación de la Base de Datos y Usuario
+
+Accedemos al gestor de MySQL como administrador (`root`):
+
+```bash
+sudo mysql
+```
+
+### Crear la base de datos
+
+Creamos una base de datos para WordPress:
+
+```sql
+CREATE DATABASE aplicacion_web;
+```
+
+### Crear un usuario para WordPress
+
+Creamos un usuario específico para la aplicación web:
+
+```sql
+CREATE USER 'usuario_web'@'%' IDENTIFIED BY 'jesus12345';
+```
+
+> El símbolo `%` permite conexiones desde cualquier host. En entornos reales es recomendable limitarlo a la IP del servidor WordPress.
+
+### Asignar permisos sobre la base de datos
+
+Concedemos permisos completos sobre la base de datos creada:
+
+```sql
+GRANT ALL PRIVILEGES ON aplicacion_web.* TO 'usuario_web'@'%';
+```
+
+### Aplicar cambios de privilegios
+
+```sql
+FLUSH PRIVILEGES;
+```
+
+### Salir de MySQL
+
+```sql
+EXIT;
+```
+
+---
+
+## Paso 4: Verificación de la Base de Datos
+
+Volvemos a entrar en MySQL para comprobar que la base de datos se ha creado correctamente.
+
+### Acceder a MySQL
+
+```bash
+sudo mysql
+```
+
+### Mostrar bases de datos existentes
+
+```sql
+SHOW DATABASES;
+```
+
+Si todo ha funcionado correctamente, debería aparecer una salida similar a esta:
+
+```text
++--------------------+
+| Database           |
++--------------------+
+| aplicacion_web     |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+```
+
+Con esto verificamos que la base de datos de WordPress ya está creada y disponible para ser utilizada por el servidor web.
+
+---
+
+## Relación con WordPress
+
+Estos datos deben coincidir exactamente con la configuración del archivo `wp-config.php` del servidor web:
+
+```php
+define( 'DB_NAME', 'aplicacion_web' );
+define( 'DB_USER', 'usuario_web' );
+define( 'DB_PASSWORD', 'jesus12345' );
+define( 'DB_HOST', '10.0.0.13' );
+```
+
+Si alguno de estos parámetros no coincide, WordPress mostrará un error de conexión a la base de datos.
+
+
+
 
 ## Paso 6: Configuración del Archivo de Conexión a la Base de Datos
 
