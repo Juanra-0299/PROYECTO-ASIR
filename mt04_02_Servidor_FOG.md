@@ -1,84 +1,93 @@
-# 2. Implementación del servidor FOG
+# Guía de Configuración y Clonación Masiva con FOG Project
 
-- Se instaló Ubuntu 26.04 LTS en la máquina destinada a servidor. Después se aplicaron configuraciones básicas de seguridad, como actualizaciones, firewall y la cuenta de servicio ( *fogproject* ), además de los ajustes de red necesarios, entre ellos IP estática y DNS.
-- Se instaló y configuró FOG, verificando la comunicación con las máquinas cliente y realizando pruebas iniciales de creación y despliegue de imágenes.
+## Introducción
+**FOG Project** es una suite gratuita de código abierto para la gestión de imágenes de disco y clonación masiva de ordenadores a través de la red. Permite a los administradores instalar sistemas operativos, realizar copias de seguridad y configurar decenas de equipos de forma desatendida y remota.
 
-Investigación y configuración inicial del servidor FOG
-![Investigación y configuración inicial del servidor FOG](imagenes/IMG_6628.jpeg)
+En este escenario, se detalla el uso de FOG exclusivamente para la **clonación de ordenadores con arranque dual (Dual Boot)** que contienen **Windows 10 y Xubuntu**, listo para entornos de administración de sistemas (ASIR).
 
-#############################################
+---
 
-Configuración firewall:
+## 1. Requisitos Previos e Infraestructura
+Antes de comenzar el proceso de registro y clonación, es fundamental cumplir con las siguientes condiciones de hardware y firmware:
 
-#####################################3
+* **Hardware Idéntico:** Se requieren al menos dos ordenadores con componentes idénticos (especialmente discos duros de la misma capacidad, por ejemplo, **1 TB**). Uno actuará como el equipo de origen (*Master*) con el arranque dual ya instalado y configurado, y el otro como destino.
+* **Prioridad de Arranque (BIOS):** Para visualizar correctamente el menú de arranque dual (GRUB), la partición de Ubuntu debe tener la máxima prioridad en la sección *Boot* de la BIOS.
+* **Seguridad del Firmware:** Las opciones **Secure Boot** y **Fast Boot** deben estar completamente **deshabilitadas** en la BIOS de ambos equipos.
 
-Durante la puesta en marcha aparecieron varios problemas:
-![Reading partition Tables..... Failed](imagenes/IMG_6634.jpeg)
+---
 
-Este problema se produjo porque FOG, por defecto, intenta realizar la copia del primer disco que encuentra. Al activar el modo debug en la tarea:
-![Activación del modo debug](imagenes/IMG_6636.jpg)
+## 2. Configuración de Red en la BIOS (Equipo de Origen)
+Una vez que los sistemas operativos estén listos y configurados en el equipo *Master*:
+1. Reinicie el equipo y acceda a la configuración de la BIOS.
+2. Habilite la opción **"Boot from onboard LAN"** (o denominación similar según el fabricante de la placa).
+3. Guarde los cambios y salga.
+4. Vuelva a ingresar a la BIOS y configure el arranque por red (**PXE Boot / LAN**) como **Boot Option #1**.
 
- y ejecutar el comando lsblk se obtuvo lo siguiente:
+---
 
- ![Listado de discos](/imagenes/IMG_6637.jpg)
+## 3. Registro del Host en el Servidor FOG
+Al reiniciar el equipo por red, se cargará el menú PXE de FOG:
 
- Como se observa, el primer disco es donde se guardan los datos y el segundo es donde se encuentra el sistema operativo. Esto se debe indicar en el servidor FOG:
+1. Seleccione la opción de **Registro e Inventario** (*Perform Full Host Registration and Inventory*).
+2. El sistema solicitará rellenar varios campos en la línea de comandos (no es necesario completarlos todos):
+   * **Hostname (Nombre del host):** Introduzca el nombre identificativo. *(Ejemplo: `2ASIR_DualBoot`)*.
+   * **Image ID:** Presione `ENTER` para omitirlo por el momento.
+   * Continúe presionando `ENTER` para aceptar los valores predeterminados hasta llegar a la solicitud de usuario.
+   * **User:** Introduzca el nombre de usuario deseado.
+3. Responda con `ENTER` a las 3 preguntas subsiguientes.
+4. Espere a que el menú confirme que el host ha sido registrado correctamente.
+5. **Apague el equipo** una vez finalizado el registro.
 
- ![Host Primary Disk](/imagenes/IMG_6638.jpg)
+---
 
- En el campo Host Primary Disk se indica el disco del que se quiere hacer la imagen.
+## 4. Gestión desde el Panel Web de FOG
+Acceda a la interfaz web de administración de FOG introduciendo la dirección IP del servidor en su navegador web (`http://<IP_SERVIDOR_FOG>/fog/management`) e inicie sesión con sus credenciales.
 
- Una vez indicado ya si realiza la imagen:
+### Paso A: Verificación del Host
+* Diríjase a **Hosts** > **List all hosts**.
+* Compruebe que el host registrado (`2ASIR_DualBoot`) aparece correctamente en la lista.
 
- ![Clonación del disco sdb](/imagenes/IMG_6680.jpeg)
+### Paso B: Creación de la Imagen de Disco
+* Vaya a la sección **Images** y seleccione **Create New Image**.
+* Configure los parámetros de la imagen exactamente con la estructura adecuada para sistemas multi-partición:
+  * **Image Name:** `2ASIR_DualBoot`
+  * **Storage Group:** `default`
+  * **Image Type:** `Multiple Partitions - Single Disk (Not Resizable)` *(Nota: Crucial para mantener la estructura de GRUB y Windows intacta)*
+  * **Partition:** `Everything`
 
-También realizamos 
+### Paso C: Asignación de la Imagen al Host
+* Regrese a **Hosts** > **List all hosts** y haga clic sobre el nombre de su host (`2ASIR_DualBoot`).
+* En el desplegable **Host Image**, seleccione la imagen que acaba de crear (`2ASIR_DualBoot`).
+* Haga clic en **Update** para guardar los cambios.
 
-## 2.1 AnyDesk para la monitorización del servidor FOG
-Se realizó la instalación con el siguiente comando:
+---
 
-```bash
-wget --max-redirect 1 --trust-server-names 'https://anydesk.com/en/downloads/thank-you?dv=deb_64' -O anydesk.deb &&
-sudo apt install ./anydesk.deb
-```
+## 5. Captura de la Imagen (*Upload*)
+1. Dentro del perfil del host en la interfaz web, diríjase a la pestaña superior **Basic Tasks**.
+2. Seleccione la opción **Capture** (identificada con un icono amarillo).
+3. Confirme la tarea haciendo clic en el botón **Task**.
+4. **Encienda el equipo de origen** (se iniciará automáticamente por red a través de PXE).
+5. Comenzará el proceso automatizado de captura de datos:
+   * El sistema clonará secuencialmente las particiones detectadas. Aunque aparezca el mensaje *"Cloned successfully"* en la primera partición, **no intervenga**, ya que debe procesar las siguientes particiones del arranque dual.
+   * Una vez finalizadas todas las particiones, el equipo se reiniciará automáticamente y volverá al menú de host registrado.
 
-Una vez iniciado, al intentar conectarnos desde otro equipo apareció este error, ya que AnyDesk no es compatible con el sistema Wayland:
+---
 
-![Error por Wayland](/imagenes/IMG_6640.jpg)
+## 6. Despliegue de la Imagen (*Deploy*) en Equipos de Destino
+Para replicar el arranque dual en un nuevo ordenador idéntico:
 
+1. **Arranque el segundo equipo por red (PXE)** y realice el proceso de registro completo como se describió en la Sección 3 (por ejemplo, asígnele el nombre `PC2ASIR_02`).
+2. Una vez registrado, apáguelo o déjelo en espera.
+3. Acceda al panel web de FOG, busque el nuevo host (`PC2ASIR_02`) y **asígnele la misma imagen** (`2ASIR_DualBoot`) en el campo *Host Image*. Haga clic en **Update**.
+4. Diríjase a **Basic Tasks** dentro del perfil de este nuevo host y seleccione **Deploy** (identificado con un icono verde). Confirme la tarea en **Task**.
+5. Encienda o reinicie el `PC2ASIR_02`. Al arrancar por red, el servidor FOG iniciará automáticamente el volcado y despliegue de la imagen.
+6. Al finalizar el proceso, el nuevo equipo dispondrá del arranque dual completamente funcional (Windows 10 y Xubuntu).
 
-Se ejecutó lo siguiente:
+---
 
-```bash
-sudo apt update &&
-sudo apt install xfce4 xfce4-goodies lightdm -y &&  sudo dpkg-reconfigure gdm3
-```
+## Resolución de Errores Comunes
 
-En el desplegable se seleccionó lightdm.
-
-Al iniciar sesión, se debe seleccionar la sesión de Xfce:
-
-![Sesión de Xfce](/imagenes/IMG_6641.jpg)
-
-### Otras configuraciones de AnyDesk
-
-#### Acceso por contraseña
-
-Accedemos a AnyDesk -> Configuración -> Acceso -> Desbloquear el control de seguridad -> Cambiar la contraseña de este puesto de trabajo (se asignó la contraseña "**2Asir**"). Además, se configuró una restricción de acceso para evitar accesos indebidos y se excluyó este equipo de descubrimiento.
-
-![Asignar contraseña para acceso no presencial y restricción de acceso](/imagenes/IMG_6643.jpg)
-
-![Excluir el dispositivo de descubrimiento](/imagenes/IMG_6644.jpg)
-
-
-### 2.2 Preparación de equipo con Windows y Xubuntu
-Se preparó un equipo con dual boot para, posteriormente, realizar la imagen e implementarlo en la clase de 2.º ASIR. Esta práctica tiene como objetivo reducir el tiempo de puesta en marcha de los nuevos cursos, ya que evita tener que configurar los equipos uno a uno.
-
-En este paso también surgieron problemas, ya que el ordenador donde se encontraba el dual boot, al apagarse, no volvió a encender. La fuente de alimentación se probó haciendo el puente entre el pin verde y el negro, pero la placa base no respondía a los botones de encendido. Para solucionarlo, se cambió el disco duro de este equipo a otro. Según la placa base, el problema radicaba en la CPU, aunque se sospecha que la fuente no entrega el voltaje correcto o que existe algún cortocircuito en la placa. No se pudo comprobar en profundidad por falta de tiempo y herramientas:
-
-![Led rojo CPU](/imagenes/IMG_6718.jpeg)
-
-### 2.3 Añadimos un disco duro al equipo del FOG
-El equipo solo disponía de un disco duro de 250 GB, por lo que se instaló otro de 500 GB donde se almacenarán las imágenes generadas a través de FOG:
-
-![Disco duro HDD en servidor FOG](/imagenes/IMG_6719.jpeg)
+### Error de Tamaño de Disco Insuficiente (Incompatibilidad de Size)
+* **Síntoma:** Error durante el despliegue o la captura que impide completar la clonación masiva.
+* **Causa:** Este fallo ocurre habitualmente cuando la imagen de origen fue capturada desde un disco de mayor capacidad (por ejemplo, **1 TB**) e intenta desplegarse en un equipo de destino que cuenta con un disco duro de menor tamaño (por ejemplo, **256 GB**), a pesar de que el resto del hardware de los ordenadores parezca idéntico.
+* **Solución:** Asegúrese siempre de que el disco de destino sea de igual o mayor tamaño que el disco de origen del cual se tomó la muestra maestra.
