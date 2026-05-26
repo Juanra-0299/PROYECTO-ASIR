@@ -1,4 +1,4 @@
-# Guía de Instalación de WordPress Paso a Paso
+# Guía de Instalación de Servidor WordPress Paso a Paso
 
 ## Paso 1: Instalación de Dependencias del Sistema
 
