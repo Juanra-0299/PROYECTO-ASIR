@@ -22,9 +22,9 @@ El servidor contará con **3 tarjetas de red (interfaces)** perfectamente segmen
 2. **Red de los alumnos (LAN) - `172.16.0.1/16`:** Una subred amplia dedicada exclusivamente a los equipos de los estudiantes. El uso de una máscara `/16` (65.534 hosts disponibles) nos permite un gran volumen de direcciones IP, ideal para un entorno de laboratorio donde se pueden desplegar decenas de máquinas virtuales para prácticas masivas sin riesgo de agotamiento de direccionamiento.
 3. **DMZ (Zona Desmilitarizada) - `10.0.0.0/8`:** Es una red virtual aislada donde alojaremos los servidores expuestos (servidores web, DNS público, etc.). Al igual que la LAN, tiene una máscara muy amplia para escalar el laboratorio. Un detalle crucial de seguridad es que esta red no está vinculada a ningún puerto físico en el servidor, lo que añade una capa extra de protección para prevenir accesos no autorizados mediante hardware físico conectado en el aula.
 
-> 📝 **Nota sobre el Hipervisor (Proxmox):** > La interfaz de puente `vmbr0` está vinculada al puerto físico `nic1` (interfaz `enp3s0`) y tiene configurada la IP `192.168.1.240`, utilizando el gateway `192.168.1.1`. Esta red pertenece formalmente al departamento y será la encargada de dar vida a nuestra WAN.
+> **Nota sobre el Hipervisor (Proxmox):** > La interfaz de puente `vmbr0` está vinculada al puerto físico `nic1` (interfaz `enp3s0`) y tiene configurada la IP `192.168.1.240`, utilizando el gateway `192.168.1.1`. Esta red pertenece formalmente al departamento y será la encargada de dar vida a nuestra WAN.
 
-> 💡 **Tip de Administración de Sistemas:**
+> **Tip de Administración de Sistemas:**
 > Cuando un servidor tiene múltiples tarjetas de red físicas, a veces es confuso saber a qué puerto corresponde cada cable. Para identificar físicamente cada interfaz de red en el servidor (haciendo parpadear el LED de la tarjeta de red en el chasis físico), podemos conectarnos por SSH o consola y usar el comando: 
 > `sudo ethtool --identify [nombre-de-la-interfaz]`
 
@@ -40,7 +40,7 @@ En resumen, la red que provee la conexión a Internet y que nos une al resto del
 
 Una vez completada la asignación y con los servicios básicos corriendo, accedemos al panel de administración web desde un navegador cliente utilizando cualquiera de las IPs internas del firewall.
 
-> ⚠️ **Nota Técnica (Certificado SSL):** El navegador mostrará una advertencia de seguridad indicando que la conexión no es privada debido al uso de un certificado SSL/TLS autofirmado. Este es un comportamiento estándar y esperado en dispositivos de red perimetral recién instalados; simplemente añadimos la excepción y aceptamos el riesgo para continuar hacia el *dashboard*.
+> **Nota Técnica (Certificado SSL):** El navegador mostrará una advertencia de seguridad indicando que la conexión no es privada debido al uso de un certificado SSL/TLS autofirmado. Este es un comportamiento estándar y esperado en dispositivos de red perimetral recién instalados; simplemente añadimos la excepción y aceptamos el riesgo para continuar hacia el *dashboard*.
 
 ---
 
@@ -58,7 +58,7 @@ En la sección `Firewall -> Rules -> DMZ` hemos configurado dos reglas de seguri
 1. **Bloqueo hacia la LAN:** Bloquea explícitamente todo el tráfico originado en la DMZ que tenga como destino la red de los alumnos (LAN). La lógica es la *contención de daños*: si un atacante compromete un servidor público de nuestra DMZ (el principal vector de ataque), esta regla evitará que pueda pivotar y usar ese servidor como puente para atacar los ordenadores vulnerables de los alumnos.
 2. **Salida a Internet:** Permite a la DMZ salir hacia Internet (cualquier destino que no sea una red privada) para que los servidores puedan resolver nombres, actualizar su paquetería y sincronizar la hora.
 
-> 🛑 **¡IMPORTANTE! Evaluación de reglas (First Match):**
+> **¡IMPORTANTE! Evaluación de reglas (First Match):**
 > Las reglas del firewall se procesan de forma secuencial de arriba hacia abajo (la primera regla que coincide es la que se aplica). Es **absolutamente crucial** que la regla de bloqueo hacia la LAN esté colocada siempre *por encima* de la regla que permite salir a Internet. Si estuviesen invertidas, la regla de «Permitir todo» se activaría primero y el tráfico malicioso pasaría libremente hacia la LAN.
 
 ### Políticas para el segmento de Alumnos
