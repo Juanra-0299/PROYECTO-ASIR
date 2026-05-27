@@ -12,35 +12,33 @@ Se van a implementar los siguientes objetivos específicos:
 
     Configurar el enrutamiento inter-VLAN para gestionar el tráfico entre los distintos grupos de trabajo (1SMR, 2SMR, 1ASIR, 2ASIR, etc):
 
-   -con iptables u otra alternativa o app
+   -Con **OPNSense**
 
-3. Implementación de Servicios en la DMZ
+2. Implementación de Servicios en la DMZ
 
     DNS: Configuración de resolución de nombres y filtrado de contenido web, optimizando el ancho de banda mediante caché.
 
    
-    Web: Alojamiento del sitio web institucional del centro.
+    Web: Alojamiento del proyecto final de ASIR.
 
    
-    FTP (Opcional): Despliegue de un repositorio de archivos accesible tanto interna como externamente.
+    Base de datos: puesta a punto de un MySQL Server para vinculación con servidor web.
 
    
     Correo (Opcional): Valoración de la implementación de un servidor de correo propio o su integración con soluciones externas.
 
    
 
-5. Optimización de la Red Interna (Servicios de Gestión)
+3. Optimización de la Red Interna (Servicios de Gestión)
 
     FOG Project: Implementación en la red de distribución para la clonación y despliegue de imágenes de sistemas operativos vía red (PXE/Multicast), eliminando el uso de soportes físicos.
 
    
-    RADIUS: Configuración de un servidor de autenticación para centralizar el control de acceso. Se integrará con el servicio FTP de la DMZ para evitar la gestión de usuarios locales, permitiendo el uso de credenciales corporativas (LDAP/AD).
 
+4. Conectividad Externa
+
+    Tailscale: conexión de forma segura a nuestro servidor a través de internet
    
-
-7. Conectividad Externa
-
-    DDNS: Configuración de DNS Dinámico en el router de borde para mitigar la rotación de IP pública dinámica y garantizar el acceso remoto a los servicios.
 
 1.3. Alcance del proyecto
 
@@ -49,14 +47,14 @@ El proyecto abarca:
 -Ciclo de vida completo de la solución a nivel lógico y de software:
 
     Diseño: Modelado de la topología en Cisco Packet Tracer, definiendo direccionamiento IP, VLANs y enrutamiento estático/dinámico.
-    Implementación: Instalación y configuración de los servicios (DNS, Web, FTP, RADIUS, FOG) sobre sistemas operativos servidor (Linux/Windows Server).
+    Implementación: Instalación y configuración de los servicios (DNS, Web, BBDD, FOG) sobre sistemas operativos servidor (Linux/Windows Server).
     Seguridad: Definición de reglas de firewall y ACLs para controlar el tráfico entre la red Alumnos, la DMZ e Internet.
     Validación: Ejecución de un plan de pruebas de conectividad y funcionalidad de servicios.
 
 -Análisis, Mantenimiento y configuracion del hardware:
 
     Auditoría de Inventario y Compatibilidad:
-        Evaluación de los recursos de hardware existentes (CPU, RAM, Almacenamiento) en los servidores destinados a virtualización (Proxmox/ESXi) para asegurar que soportan la carga de los nuevos servicios (RADIUS, FOG, Web, etc.).
+        Evaluación de los recursos de hardware existentes (CPU, RAM, Almacenamiento) en los servidores destinados a virtualización (Proxmox/ESXi) para asegurar que soportan la carga de los nuevos servicios (FOG, Web, etc.).
         Verificación de capacidades en equipos de interconexión: Soporte para estándares en switches y capacidad de procesamiento/throughput en el router para gestionar el tráfico de la DMZ sin cuellos de botella.
 
     Mantenimiento Preventivo y Actualización:
