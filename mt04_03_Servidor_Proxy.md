@@ -1,6 +1,6 @@
 # 3. Implementación de servidor proxy: Guía de Configuración y Enrutamiento Avanzado con OPNsense
 ## Requisitos
-Siguiendo la [estructura actual](/mt03_diseno_tecnico.png) necesitamos un equipo con un mínimo de 3 tarjetas de red para separar la red de los alumnos de los servidores.
+Siguiendo la [estructura actual](/mt03_diseno_tecnico_real.png) necesitamos un equipo con un mínimo de 3 tarjetas de red para separar la red de los alumnos de los servidores.
 
 Para la gestión, seguridad y el enrutamiento avanzado de nuestra red usaremos **OPNsense**, un potente firewall de código abierto basado en FreeBSD que destaca por su robustez y su interfaz intuitiva. 
 
