@@ -23,22 +23,18 @@ Diseñar, implementar y asegurar una infraestructura de red escalable que sustit
 
 **2. Implementación de Servicios en la DMZ**
 * **DNS:** Configuración de resolución de nombres y filtrado de contenido web, optimizando el ancho de banda mediante caché.
-* **Web:** Alojamiento del sitio web institucional del centro.
-* **FTP:** Despliegue de un repositorio de archivos accesible tanto interna como externamente.
-* **RADIUS:** Configuración de un servidor de autenticación para centralizar el control de acceso. Se integrará con el servicio FTP de la DMZ para evitar la gestión de usuarios locales, permitiendo el uso de credenciales corporativas (LDAP/AD).
+* **Web:** Creación de página web con los contenidos del proyecto.
+* **BBDD:** Creación de un usuario y una base de datos ligada al servidor web.
   
 **3. Optimización de la Red Interna (Servicios de Gestión)**
 * **FOG Project:** Implementación en la red de distribución para la clonación y despliegue de imágenes de sistemas operativos vía red (PXE/Multicast), eliminando el uso de soportes físicos.
-
-**4. Conectividad Externa**
-* **DDNS:** Configuración de DNS Dinámico en el router de borde para mitigar la rotación de IP pública dinámica y garantizar el acceso remoto a los servicios.
 
 ## 1.3. Alcance del proyecto
 El proyecto abarca:
 
 **-Ciclo de vida completo de la solución a nivel lógico y de software:**
 1.  **Diseño:** Modelado de la topología en **Cisco Packet Tracer**, definiendo direccionamiento IP, VLANs y enrutamiento estático/dinámico.
-2.  **Implementación:** Instalación y configuración de los servicios (DNS, Web, FTP, RADIUS, FOG) sobre sistemas operativos servidor (Linux/Windows Server).
+2.  **Implementación:** Instalación y configuración de los servicios (DNS, Web, BBDD, FOG) sobre sistemas operativos servidor (Linux/Windows Server).
 3.  **Seguridad:** Definición de reglas de firewall y ACLs para controlar el tráfico entre la red Alumnos, la DMZ e Internet.
 4.  **Validación:** Ejecución de un plan de pruebas de conectividad y funcionalidad de servicios.
    
@@ -48,7 +44,7 @@ El proyecto abarca:
 **-Análisis, Mantenimiento y configuracion del hardware:**
 
 * **Auditoría de Inventario y Compatibilidad:**
-    * Evaluación de los recursos de hardware existentes (CPU, RAM, Almacenamiento) en los servidores destinados a virtualización (Contenedores, Docker, Kubernetes, Proxmox/ESXi) para asegurar que soportan la carga de los nuevos servicios (RADIUS, FOG, Web, etc.).
+    * Evaluación de los recursos de hardware existentes (CPU, RAM, Almacenamiento) en los servidores destinados a virtualización (Contenedores, Docker, Kubernetes, Proxmox/ESXi) para asegurar que soportan la carga de los nuevos servicios (FOG, Web, etc.).
     * Verificación de capacidades en equipos de interconexión: Soporte para estándares en switches y capacidad de procesamiento/throughput en el router para gestionar el tráfico de la DMZ sin cuellos de botella.
 
 * **Mantenimiento Preventivo y Actualización:**
