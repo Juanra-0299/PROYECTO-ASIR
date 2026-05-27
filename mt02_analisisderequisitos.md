@@ -22,21 +22,16 @@ Se requiere un router multiinterfaz con las siguientes funciones:
 3. **Interfaz de alumnado**: distribuir Internet a las aulas.
 
 ### Servidor en la DMZ
-Un servidor que alojará los siguientes servicios, algunos de ellos mediante **contenedores Docker** para mayor eficiencia y escalabilidad:
+Un servidor que alojará los siguientes servicios.
 
 - **DNS**: resolución de nombres y filtrado de contenido.
-- **Web**: servicio web del centro.
-- **FTP**: repositorio de archivos.
-- **Utilidades varias**: juegos, temperaturas, etc.
+- **Web**: alojamiento del contenido del proyecto con imágenes.
+- **BBDD**: creación de una base de datos para el servidor web.
 
 ### Equipo en la red de alumnado
 Un servidor dedicado que proporciona:
 
 - **FOG**: despliegue y restauración de equipos sin necesidad de pendrive.
-- **RADIUS**: autenticación centralizada.
-
-### Patch panel
-Para el aula de 1º de Asir.
 
 ### Conectores rj45 machos y hembras
 Para las aulas que lo requieran.
