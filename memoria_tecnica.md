@@ -97,11 +97,9 @@ Se sustituirá el proxy actual por uno nuevo y se creará una **DMZ**. El nuevo 
 
 - **DNS**: filtrado de acceso a sitios web y mejora de rendimiento mediante caché.
 - **Web**: alojamiento del sitio web del centro.
-- **FTP**: repositorio para el profesorado con acceso desde todas las aulas.
 - **Mail**: opcional; actualmente el correo está gestionado por Google mediante acuerdos con la Junta de Andalucía.
 
 ## Servicios fuera de la DMZ (switch del alumnado)
 En el switch del alumnado, encargado de distribuir Internet a todas las aulas, se desplegarán los siguientes servidores:
 
 - **FOG**: restauración y despliegue de equipos sin necesidad de pendrive.
-- **RADIUS**: autenticación de profesorado para acceso al servidor FTP y un posible servidor **LDAP**.
