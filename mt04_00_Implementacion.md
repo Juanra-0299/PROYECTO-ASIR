@@ -16,26 +16,28 @@ Se van a implementar los siguientes objetivos específicos:
 
 2. Implementación de Servicios en la DMZ
 
-    DNS: Configuración de resolución de nombres y filtrado de contenido web, optimizando el ancho de banda mediante caché.
+   DNS: Configuración de resolución de nombres y filtrado de contenido web, optimizando el ancho de banda mediante caché.
 
    
-    Web: Alojamiento del proyecto final de ASIR.
+   Web: Alojamiento del proyecto final de ASIR.
 
    
-    Base de datos: puesta a punto de un MySQL Server para vinculación con servidor web.
+   Base de datos: Puesta a punto de un MySQL Server para vinculación con servidor web.
 
    
-    Correo (Opcional): Valoración de la implementación de un servidor de correo propio o su integración con soluciones externas.
+   OPNSense: Servicio de enrutamiento y gestión de red.
+
+   LDAP: Servidor de autenticación para Proxmox y Wordpress.
 
    
 
-3. Optimización de la Red Interna (Servicios de Gestión)
+4. Optimización de la Red Interna (Servicios de Gestión)
 
     FOG Project: Implementación en la red de distribución para la clonación y despliegue de imágenes de sistemas operativos vía red (PXE/Multicast), eliminando el uso de soportes físicos.
 
    
 
-4. Conectividad Externa
+5. Conectividad Externa
 
     Tailscale: conexión de forma segura a nuestro servidor a través de internet
    
