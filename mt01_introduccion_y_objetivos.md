@@ -25,6 +25,7 @@ Diseñar, implementar y asegurar una infraestructura de red escalable que sustit
 * **DNS:** Configuración de resolución de nombres y filtrado de contenido web, optimizando el ancho de banda mediante caché.
 * **Web:** Creación de página web con los contenidos del proyecto.
 * **BBDD:** Creación de un usuario y una base de datos ligada al servidor web.
+* **LDAP:** Servidor de autenticación para Proxmox y Wordpress.
   
 **3. Optimización de la Red Interna (Servicios de Gestión)**
 * **FOG Project:** Implementación en la red de distribución para la clonación y despliegue de imágenes de sistemas operativos vía red (PXE/Multicast), eliminando el uso de soportes físicos.
@@ -34,7 +35,7 @@ El proyecto abarca:
 
 **-Ciclo de vida completo de la solución a nivel lógico y de software:**
 1.  **Diseño:** Modelado de la topología en **Cisco Packet Tracer**, definiendo direccionamiento IP, VLANs y enrutamiento estático/dinámico.
-2.  **Implementación:** Instalación y configuración de los servicios (DNS, Web, BBDD, FOG) sobre sistemas operativos servidor (Linux/Windows Server).
+2.  **Implementación:** Instalación y configuración de los servicios (DNS, Web, BBDD, FOG, LDAP) sobre sistemas operativos servidor (Linux/Windows Server).
 3.  **Seguridad:** Definición de reglas de firewall y ACLs para controlar el tráfico entre la red Alumnos, la DMZ e Internet.
 4.  **Validación:** Ejecución de un plan de pruebas de conectividad y funcionalidad de servicios.
    
