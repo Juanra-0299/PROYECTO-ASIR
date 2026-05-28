@@ -5,7 +5,7 @@ Este Proyecto Intermodular surge de la necesidad de actualizar la infraestructur
 
 Aprovechando la sustitución del dispositivo de borde (proxy), se rediseñará la topología lógica para transicionar de una red plana a una estructura segmentada y jerárquica. La pieza central de esta actualización es la implementación de una **Zona Desmilitarizada (DMZ)**, diseñada para alojar servicios accesibles públicamente y aislar el tráfico externo de la red interna (LAN) educativa y administrativa.
 
-El proyecto simula un entorno de producción real para un instituto de Formación Profesional, integrando enrutamiento avanzado, segmentación mediante VLANs y servicios tan importantes como DNS, autenticación RADIUS centralizada y sistemas de despliegue automatizado (FOG Project).
+El proyecto simula un entorno de producción real para un instituto de Formación Profesional, integrando enrutamiento avanzado, segmentación mediante VLANs y servicios tan importantes como DNS y sistemas de despliegue automatizado (FOG Project).
 
 ## 1.2. Objetivos del proyecto
 
