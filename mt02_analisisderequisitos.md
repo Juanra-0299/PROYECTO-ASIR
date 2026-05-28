@@ -24,9 +24,11 @@ Se requiere un router multiinterfaz con las siguientes funciones:
 ### Servidor en la DMZ
 Un servidor que alojará los siguientes servicios.
 
-- **DNS**: resolución de nombres y filtrado de contenido.
-- **Web**: alojamiento del contenido del proyecto con imágenes.
-- **BBDD**: creación de una base de datos para el servidor web.
+- **DNS:** resolución de nombres y filtrado de contenido.
+- **Web:** alojamiento del contenido del proyecto con imágenes.
+- **BBDD:** creación de una base de datos para el servidor web.
+- **LDAP:** servidor de autenticación para Proxmox y Wordpress.
+- **OPNSense:** servicio de enrutamiento y gestión de red.
 
 ### Equipo en la red de alumnado
 Un servidor dedicado que proporciona:
