@@ -26,6 +26,7 @@ Diseñar, implementar y asegurar una infraestructura de red escalable que sustit
 * **Web:** Creación de página web con los contenidos del proyecto.
 * **BBDD:** Creación de un usuario y una base de datos ligada al servidor web.
 * **LDAP:** Servidor de autenticación para Proxmox y Wordpress.
+* **OPNSense:** Servicio de enrutamiento y gestión de red.
   
 **3. Optimización de la Red Interna (Servicios de Gestión)**
 * **FOG Project:** Implementación en la red de distribución para la clonación y despliegue de imágenes de sistemas operativos vía red (PXE/Multicast), eliminando el uso de soportes físicos.
