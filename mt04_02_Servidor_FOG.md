@@ -51,6 +51,7 @@ Acceda a la interfaz web de administración de FOG introduciendo la dirección I
 * Vaya a la sección **Images** y seleccione **Create New Image**.
 * Configure los parámetros de la imagen exactamente con la estructura adecuada para sistemas multi-partición:
   * **Image Name:** `2ASIR_DualBoot`
+  * **Operative System:** `Linux`
   * **Storage Group:** `default`
   * **Image Type:** `Multiple Partitions - Single Disk (Not Resizable)` *(Nota: Crucial para mantener la estructura de GRUB y Windows intacta)*
   * **Partition:** `Everything`
